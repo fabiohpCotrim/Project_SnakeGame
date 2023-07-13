@@ -7,7 +7,7 @@ public class GameFrame extends JFrame {
 
 	public GameFrame() {
 		this.add(new GamePanel());
-		this.setTitle("Snake");
+		this.setTitle("Soul Eater Snake");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.pack();
