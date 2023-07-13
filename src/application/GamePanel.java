@@ -54,14 +54,13 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 		g.setColor(Color.red);
 		g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
-		
-		for(int i = 0; i< bodyParts; i++) {
-			if(i == 0) {
+
+		for (int i = 0; i < bodyParts; i++) {
+			if (i == 0) {
 				g.setColor(Color.green);
 				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-			}
-			else {
-				g.setColor(new Color(45,180,0));
+			} else {
+				g.setColor(new Color(45, 180, 0));
 				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
 			}
 		}
@@ -73,11 +72,10 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void move() {
-		for (int i = bodyParts; i < 0; i++) {
+		for (int i = bodyParts; i > 0; i--) {
 			x[i] = x[i - 1];
 			y[i] = y[i - 1];
 		}
-
 		switch (direction) {
 		case 'U':
 			y[0] = y[0] - UNIT_SIZE;
@@ -99,7 +97,32 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void checkCollisions() {
-
+		// checks if head collides with body
+		for (int i = bodyParts; i > 0; i--) {
+			if ((x[0] == x[i]) && (y[0] == y[i])) {
+				running = false;
+			}
+		}
+		// check if head touches left border
+		if (x[0] < 0) {
+			running = false;
+		}
+		// check if head touches right border
+		if (x[0] > SCREEN_WIDTH) {
+			running = false;
+		}
+		//check if head touches top border
+		if (y[0] < 0) {
+			running = false;
+		}
+		//check if head touches bottom border
+		if (y[0] > SCREEN_HEIGHT) {
+			running = false;
+		}
+		
+		if(!running) {
+			timer.stop();
+		}
 	}
 
 	public void gameOver(Graphics g) {
@@ -108,7 +131,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
+		if(running) {
+			move();
+			checkApple();
+			checkCollisions();
+		}
+		repaint();
 
 	}
 
